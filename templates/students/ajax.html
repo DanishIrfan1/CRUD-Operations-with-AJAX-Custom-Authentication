@@ -1,0 +1,100 @@
+<script>
+    // Save data
+    $('#addstudent').click(function(){
+        console.log("Button Save Clicked");
+        output ="";
+        let sid = $('#stuid').val();
+        let nam = $('#id_name').val();
+        let rol = $('#id_roll').val();
+        let cit = $('#id_city').val();
+        let cours = $('#id_course').val();
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+      
+        
+        mydata = {stuid:sid, name:nam, roll:rol, city:cit, course:cours,csrfmiddlewaretoken:csr};
+        $.ajax({
+            url: "{% url 'save' %}",
+            method: "POST",
+            data: mydata,
+            success:function(data){
+              console.log(data)
+              if(data.status == 'Data Saved'){
+                x = data.student_data;
+                for(i=0; i<x.length; i++){
+                    output += "<tr><td>" + x[i].name +
+                       "</td><td>" + x[i].roll +
+                       "</td><td>" + x[i].city +
+                       "</td><td>" + x[i].course +
+                       "</td><td> <a href='#addStudentModal' class='edit' data-toggle='modal' data-sid="+x[i].id + "><i class='material-icons' data-toggle='tooltip' title='Edit'>&#xE254;</i></a> <a href='#deleteStudentModal' class='delete' data-toggle='modal' data-sid="+x[i].id + "><i class='material-icons' data-toggle='tooltip' title='Delete'>&#xE872;</i></a> "
+                }
+                $('#tbody').html(output);
+                $('form')[0].reset();
+            }
+            if(data.status == 'Not Saved'){
+                console.log('Unable Submit Data');
+                $('#stuid').val("");
+            }
+            },
+            
+        });
+    });
+        
+    // Delete
+    $('#tbody').on("click", ".delete", function(){
+        console.log("Delete Button Cliked");
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        mydata = {sid:id,csrfmiddlewaretoken:csr};
+        //mythis = this;
+    
+        $.ajax({
+            url: "{% url 'delete' %}",
+            method:"POST",
+            data:mydata,
+    
+            success: function(data){
+                console.log(data);
+    
+                if(data.status == 1){
+                    console.log("Data Deleted");
+                    closest("tr").fadeOut();
+                }
+    
+                if(data.status == 0){
+                    console.log("Unable To Deleted Data");
+                    closest("tr").fadeOut();
+                }
+    
+            },
+        })
+    })
+
+
+    // Edit
+    $('#tbody').on("click", ".edit", function(){
+        console.log("Edit Button Cliked");
+        let id = $(this).attr("data-sid");
+        let csr = $("input[name=csrfmiddlewaretoken]").val();
+        console.log(id);
+    
+        mydata = {sid:id,csrfmiddlewaretoken:csr}
+    
+        $.ajax({
+            url: "{% url 'edit' %}",
+            method:"POST",
+            data:mydata,
+    
+            success: function(data){
+                console.log(data);
+                $("#stuid").val(data.id);
+                $("#id_name").val(data.name);
+                $("#id_roll").val(data.roll);
+                $("#id_city").val(data.city);
+                $("#id_course").val(data.course);
+                console.log(data.id);
+    
+            },
+        })
+    })
+    
+</script>
