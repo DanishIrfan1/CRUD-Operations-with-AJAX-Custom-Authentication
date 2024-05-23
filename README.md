@@ -43,13 +43,39 @@ This project is a fully functional CRUD application designed for managing studen
 
 ### Prerequisites
 
-- Python 3.x
-- Django 3.x
+- Python
+- Django
 - pip (Python package installer)
 
 ### Installation
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/yourusername/student-entry-application.git
-   cd student-entry-application
+   git clone https://github.com/DanishIrfan1/CRUD-Operations-with-AJAX-Custom-Authentication.git
+   cd CRUD-Operations-with-AJAX-Custom-Authentication
+   ```
+2. **Create and Activate a Virtual Environment:**
+```bash
+python -m venv .venv
+.venv\Scripts\activate  # On Mac use `source venv/bin/activate`
+```
+3. **Install the Required Packages:**
+```bash
+pip install -r requirements.txt
+```
+4. **Apply Migrations:**
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+5. **Create a Superuser:**
+```bash
+python manage.py createsuperuser
+```
+6. **Run the Development Server:**
+```bash
+python manage.py runserver
+```
+7. **Access the Application:**
+- Open a web browser and go to http://127.0.0.1:8000/.
+- Log in to the admin dashboard at http://127.0.0.1:8000/admin/ to activate staff users.
